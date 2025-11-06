@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNDO PERFEITO - SESSÃO ATIVA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <main class="container">
+        <h1 class="screen-title">> SESSÃO ATIVA</h1>
+
+        <div class="text-box">
+            <p>Olá, <span style="color: var(--accent-color);">{{ nome }}</span>! Como você imagina o mundo perfeito?</p>
+            <audio id="audioPersonalizado" controls autoplay>
+                <source src="" type="audio/mpeg">
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+        </div>
+        
+        <form id="formMundo" onsubmit="return false;">
+            <div class="input-area">
+                <label for="mundoPerfeito">> </label>
+                <textarea name="mundo_perfeito" id="mundoPerfeito" placeholder="Ex: Um mundo com muitas árvores, animais livres, tecnologia sustentável, pessoas felizes..." required></textarea>
+            </div>
+            <button type="submit" class="button-link" id="btnGerar">[ ✨ GERAR VISÃO ]</button>
+        </form>
+        
+        <div id="loading">
+            <div id="loading-spinner"></div>
+            <p style="margin-top: 15px;">Processando sua visão... Isso pode levar alguns segundos.</p>
+        </div>
+    </main>
+    
+    </main>
+    
+    </main>
+    
+    <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+    <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+            const nomeUsuario = "{{ nome|e }}"; // Pega o nome do Flask
+
+            // Carregar áudio personalizado
+            if (nomeUsuario) {
+                const audioEl = document.getElementById('audioPersonalizado');
+                const sourceEl = audioEl.querySelector('source');
+                
+                sourceEl.src = `/audio_personalizado/${encodeURIComponent(nomeUsuario)}`;
+                
+                audioEl.load();
+                audioEl.play().catch(err => {
+                    console.log('Reprodução automática bloqueada:', err);
+                });
+            }
+
+            // Interceptar submit do formulário para gerar imagem
+            const formMundo = document.getElementById('formMundo');
+            formMundo.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const mundoPerfeito = document.getElementById('mundoPerfeito').value;
+                const loading = document.getElementById('loading');
+                const btnGerar = document.getElementById('btnGerar');
+                
+                if (!mundoPerfeito.trim()) {
+                    alert('Por favor, descreva sua visão do mundo perfeito.');
+                    return;
+                }
+                
+                // Mostrar loading e desabilitar botão
+                loading.style.display = 'block';
+                btnGerar.disabled = true;
+                btnGerar.textContent = '[ VALIDANDO VISÃO (ODS 13)... ]';
+                
+                try {
+                    // Fazer requisição POST para validar ODS e gerar imagem
+                    const response = await fetch('/gerar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nome: nomeUsuario || 'Usuário',
+                            mundo_perfeito: mundoPerfeito
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        // SUCESSO! Redirecionar para resultado (sem dados ODS)
+                        const params = new URLSearchParams({
+                            nome: data.nome,
+                            mundo_perfeito: data.mundo_perfeito,
+                            imagem_url: data.imagem_url
+                        });
+                        window.location.href = `/resultado?${params.toString()}`;
+                    } else {
+                        // ERRO! (Pega o erro 400 da ODS ou outro erro)
+                        alert('ERRO: ' + (data.erro || 'Erro desconhecido'));
+                        loading.style.display = 'none';
+                        btnGerar.disabled = false;
+                        btnGerar.textContent = '[ ✨ GERAR VISÃO ]';
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('ERRO DE CONEXÃO. O servidor Flask não esta funcionando');
+                    loading.style.display = 'none';
+                    btnGerar.disabled = false;
+                    btnGerar.textContent = '[ ✨ GERAR VISÃO ]';
+                }
+            });
+    </script>
+</body>
+</html>

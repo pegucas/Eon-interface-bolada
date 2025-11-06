@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNDO PERFEITO - TERMINAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <main class="container">
+        <h1 class="screen-title">> GERADOR DE MUNDOS</h1>
+        <div class="text-box">
+            <p class="text-content">
+                Bem-vindo ao terminal do Eon.
+                <br><br>
+                Irei transformar sua visão em uma imagem
+                <br><br>
+                Vamos lá?
+            </p>
+        </div>
+        <a href="{{ url_for('pergunta_nome') }}" class="button-link">[ INICIAR SESSÃO ]</a>
+    </main>
+    <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+</body>
+</html>

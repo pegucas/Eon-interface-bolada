@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNDO PERFEITO - VISUALIZAÇÃO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <main class="container">
+        <h1 class="screen-title">> VISUALIZAÇÃO GERADA</h1>
+        
+        <div id="resultado" class="resultado">
+            <h2 style="text-align: center; margin-bottom: 20px;">
+                Mundo Perfeito de <span style="color: var(--accent-color);">{{ nome }}</span>
+            </h2>
+
+            <div class="text-box visao-card">
+                <h3>> Sua Visão (Prompt):</h3>
+                <p id="visaoTexto" style="font-style: italic;">"{{ mundo_perfeito }}"</p>
+            </div>
+            
+            <div class="imagem-container" id="image-container">
+                <h3 style="text-align: center; margin-bottom: 15px;">> Renderização Realista (1792x1024):</h3>
+                <img id="generated-image" src="{{ imagem_url }}" alt="Mundo perfeito de {{ nome }}">
+            </div>
+            
+            <div class="btn-container" style="display: flex; gap: 15px; justify-content: center;">
+                 <a href="{{ url_for('mundo_perfeito', nome=nome) }}" class="button-link" style="width: 45%;">[ 🔄 GERAR OUTRO ]</a>
+                 <a href="{{ url_for('index') }}" class="button-link" style="width: 45%;">[ 🏠 VOLTAR AO INÍCIO ]</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+    <script>
+        // Adicionar efeito de clique na imagem
+        document.getElementById('generated-image').addEventListener('click', function() {
+            // Abrir imagem em nova aba
+            window.open(this.src, '_blank');
+        });
+    </script>
+</body>
+</html>

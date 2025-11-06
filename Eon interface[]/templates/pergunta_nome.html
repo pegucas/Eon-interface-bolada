@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNDO PERFEITO - IDENTIFICAÇÃO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <main class="container">
+        <h1 class="screen-title">> IDENTIFICAÇÃO</h1>
+        
+        <div class="text-box">
+            <p>Conectado. Para registro da sessão, por favor, insira sua designação (nome).</p>
+            <audio controls autoplay>
+                <source src="{{ url_for('audio_pergunta') }}" type="audio/mpeg">
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+        </div>
+        
+        <form action="{{ url_for('mundo_perfeito') }}" method="GET">
+            <div class="input-area">
+                <label for="nome">> </label>
+                <input type="text" id="nome" name="nome" placeholder="Digite seu nome aqui..." required autocomplete="off">
+            </div>
+            <button type="submit">[ CONFIRMAR ]</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+</body>
+</html>

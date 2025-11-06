@@ -1,0 +1,188 @@
+/* Importação de fonte já está no HTML */
+
+/* Variáveis para cores do terminal */
+:root {
+    --bg-color: #000000;      /* Fundo preto */
+    --text-color: #00ff41;    /* Texto verde b rilhante */
+    --accent-color: #39b658;  /* Destaque verde */
+    --error-color: #ff4154;   /* Vermelho para erros */
+    --matrix:#1e6630;
+}
+
+/* Animação do cursor piscando */
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 20px;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Esconde barras de rolagem causadas pelo canvas */
+}
+
+/* Estilo para o canvas do fundo */
+#matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca o canvas atrás de todo o conteúdo */
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    border: 2px solid var(--accent-color);
+    background: rgba(0, 0, 0, 0.75); /* Fundo semi-transparente para ver o efeito Matrix através */
+    backdrop-filter: blur(2px); /* Efeito de desfoque sutil */
+}
+
+.screen-title {
+    font-size: 1.5em;
+    text-align: center;
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-color);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.text-box {
+    border: 1px solid var(--accent-color);
+    padding: 15px;
+    margin-bottom: 20px;
+    min-height: 50px;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.5); /* Fundo da caixa de texto também semi-transparente */
+}
+
+.hidden {
+    display: none;
+}
+
+.input-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-area label {
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+
+input[type="text"],
+textarea {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--accent-color);
+    color: var(--text-color);
+    font-family: 'VT323', monospace;
+    font-size: 1.2em;
+    padding: 5px;
+    height: 40px;
+}
+
+textarea {
+    height: 100px; /* Altura para o textarea */
+    resize: vertical;
+    line-height: 1.4;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-bottom-width: 3px;
+    animation: blink 1s step-end infinite;
+}
+
+.feedback {
+    color: var(--error-color);
+    text-align: center;
+    height: 20px;
+    margin: 5px 0 10px 0;
+}
+
+#image-container {
+    text-align: center;
+}
+
+#generated-image {
+    max-width: 100%;
+    border: 2px solid var(--accent-color);
+    margin-top: 15px;
+}
+
+button,
+.button-link {
+    display: block;
+    width: 60%;
+    margin: 20px auto 0;
+    padding: 10px;
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: 'VT323', monospace;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s, color 0.2s;
+    text-decoration: none;
+    text-align: center;
+}
+
+button:hover,
+.button-link:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+}
+
+#send-button {
+    width: auto;
+    margin: 0;
+    margin-left: 10px;
+    padding: 5px 15px;
+}
+
+/* Estilo para o player de áudio */
+audio {
+    width: 100%;
+    margin-top: 10px;
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(100deg);
+}
+
+/* Estilo para o spinner de loading */
+#loading {
+    display: none; 
+    text-align: center; 
+    padding: 20px;
+}
+#loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--matrix);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
